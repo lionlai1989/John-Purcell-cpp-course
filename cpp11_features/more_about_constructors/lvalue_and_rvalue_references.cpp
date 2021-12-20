@@ -14,13 +14,6 @@ class Test {
     Test() {
         cout << "Default No-Parameter Constructor" << endl;
         _pBuffer = new int[SIZE]{};
-        /**
-         * Setting the default value to 0 is a good practice. Three different ways of setting the
-         * memory to zero are shown here.
-         * memset(_pBuffer, 0, sizeof(int) * SIZE);
-         * _pBuffer = new int[SIZE]();
-         * _pBuffer = new int[SIZE]{};
-         */
     }
 
     Test(int i) {
