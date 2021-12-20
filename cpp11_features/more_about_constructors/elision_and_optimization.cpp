@@ -25,11 +25,13 @@ class Test {
         cout << "Destructor" << endl;
     }
 
-    friend ostream &operator<<(ostream &out, const Test &test) {
-        out << "Hello from test";
-        return out;
-    }
+    friend ostream &operator<<(ostream &out, const Test &test);
 };
+
+ostream &operator<<(ostream &out, const Test &test) {
+    out << "Hello from test";
+    return out;
+}
 
 Test get_test() {
     return Test();
