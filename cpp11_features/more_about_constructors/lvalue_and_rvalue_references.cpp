@@ -8,7 +8,7 @@ class Test {
   private:
     static const int SIZE = 100;
 
-    int *_pBuffer;
+    int *_pBuffer{nullptr};
 
   public:
     Test() {
