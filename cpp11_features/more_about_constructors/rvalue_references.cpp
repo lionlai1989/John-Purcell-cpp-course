@@ -70,19 +70,19 @@ int main() {
     cout << test1 << endl;
 
     /**
-     * ref_lvalue_test1 is a lvalue reference pointing to a rvalue.
+     * ref_lvalue_test1 is a lvalue reference pointing to a lvalue.
      */
     Test &ref_lvalue_test1 = test1;
 
     /**
-     * ref_rvalue_test2 is a lvalue reference which can bind to a rvalue. So we cannot bind
-     * ref_rvalue_test2 to a lvalue like below. But we can bind ref_rvalue_test2 to a rvalue.
-     * Test &&ref_rvalue_test2 = test1; // test1 is a lvalue here.
+     * ref_lvalue_test2 is a lvalue reference which can bind to a rvalue. So we cannot bind
+     * ref_lvalue_test2 to a lvalue like below. But we can bind ref_lvalue_test2 to a rvalue.
+     * Test &&ref_lvalue_test2 = test1; // test1 is a lvalue here.
      */
-    Test &&ref_rvalue_test2 = get_test();
+    Test &&ref_lvalue_test2 = get_test();
 
     check(ref_lvalue_test1); // lvalue function!
-    check(ref_rvalue_test2); // lvalue function!
+    check(ref_lvalue_test2); // lvalue function!
     check(Test());           // rvalue function!
     check(get_test());       // rvalue function!
 
