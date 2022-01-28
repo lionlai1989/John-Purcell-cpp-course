@@ -23,6 +23,8 @@ using namespace std;
  * here for efficiency and this will not have any methods so it's better if we use struct here, or
  * we could just as well use a class and just put public at the top. 
  */
+namespace caveofprogramming {
+
 struct BitmapFileHeader {
     char header[2] = {'B', 'M'}; // It means BitMap.
     /**
@@ -34,4 +36,5 @@ struct BitmapFileHeader {
     int32_t dataOffset;
 };
 
+} // namespace caveofprogramming
 #endif
