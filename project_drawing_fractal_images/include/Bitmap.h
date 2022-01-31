@@ -2,6 +2,7 @@
 #define BITMAP_H_
 
 #include <cstdint>
+#include <memory>
 #include <string>
 using namespace std;
 
@@ -9,8 +10,9 @@ namespace caveofprogramming {
 
 class Bitmap {
   private:
-    int m_width = 0;
-    int m_height = 0;
+    int m_width{0};
+    int m_height{0};
+    unique_ptr<uint8_t[]> m_pPixels{nullptr}; // m_pPixels points to a uint8 array.
 
   public:
     Bitmap(int width, int height);

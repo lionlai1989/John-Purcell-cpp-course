@@ -4,6 +4,8 @@
 #include <cstdint> // c standard int
 using namespace std;
 
+namespace caveofprogramming {
+
 /**
  * In C/C++, if we have a struct like below, it will align data with padding in a way that's most
  * efficient and we can't allow that here, because we want to write "BitmapFileHeader" literally to
@@ -15,6 +17,7 @@ using namespace std;
  * hidden padding in there. And if we don't do that then our final bitmap will be unreadable. There
  * will be extra padding bytes behind the scenes within this struct.
  */
+#pragma pack(push)
 #pragma pack(2)
 
 /**
@@ -23,8 +26,6 @@ using namespace std;
  * here for efficiency and this will not have any methods so it's better if we use struct here, or
  * we could just as well use a class and just put public at the top. 
  */
-namespace caveofprogramming {
-
 struct BitmapFileHeader {
     char header[2] = {'B', 'M'}; // It means BitMap.
     /**
@@ -35,6 +36,8 @@ struct BitmapFileHeader {
     int32_t reserved = {0};
     int32_t dataOffset;
 };
+#pragma pack(pop)
 
 } // namespace caveofprogramming
+
 #endif
