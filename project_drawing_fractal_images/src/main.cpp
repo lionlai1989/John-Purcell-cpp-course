@@ -1,6 +1,6 @@
 #include "Bitmap.h"
 #include "Mandelbrot.h"
-#include "Zoom.h"
+#include "ZoomList.h"
 #include <cstdint>
 #include <iostream>
 #include <math.h>
