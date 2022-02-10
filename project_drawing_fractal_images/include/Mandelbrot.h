@@ -15,7 +15,7 @@ class Mandelbrot {
 
   public:
     Mandelbrot();
-    static int getIteration(double x, double y);
+    static int getIterations(double x, double y);
     virtual ~Mandelbrot();
 };
 

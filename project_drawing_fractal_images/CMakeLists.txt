@@ -1,6 +1,12 @@
+# Steps to complie and run:
 # cmake -B build .
 # cd build
 # make
+# ./runfractalimage
+# Or do something like:
+# cd build
+# cmake .. && make && ./runfractalimage
+
 cmake_minimum_required(VERSION 3.16.3)
 project (Fractal_Image)
  
