@@ -4,7 +4,7 @@
 # make
 # ./runfractalimage
 # Or do something like:
-# cd build
+# mkdir build && cd build
 # cmake .. && make && ./runfractalimage
 
 cmake_minimum_required(VERSION 3.16.3)
