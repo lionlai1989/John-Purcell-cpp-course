@@ -1,5 +1,5 @@
 #include <iostream>
-#include <src/Student.h>
+#include "Student.h"
 
 Student::Student(std::string name):name(name){}
 

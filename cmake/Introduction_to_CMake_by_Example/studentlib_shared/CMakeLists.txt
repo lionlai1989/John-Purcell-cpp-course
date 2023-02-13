@@ -6,6 +6,8 @@ set(CMAKE_BUILD_TYPE Release)
 include_directories(include)
 
 #However, the file(GLOB...) allows for wildcard additions:
+# do not use file(GLOB) to file sources files.
+# Read cmake book 20.5 file globbing
 file(GLOB SOURCES "src/*.cpp")
 
 #Generate the shared library from the sources
