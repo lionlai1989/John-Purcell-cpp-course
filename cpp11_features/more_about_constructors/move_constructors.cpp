@@ -48,7 +48,7 @@ class Test {
     }
 
     Test &operator=(const Test &other) {
-        cout << "Assignment" << endl;
+        cout << "Copy Assignment Operator" << endl;
         _pBuffer = new int[SIZE]{};
         memcpy(_pBuffer, other._pBuffer, sizeof(int) * SIZE);
         return *this;
