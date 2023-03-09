@@ -5,17 +5,16 @@
 
 using namespace std;
 
-class Test1 {
+class String1 {
 private:
-  static const int SIZE = 10;
-  int *_pBuffer;
-  string name;
+  uint32_t size;
+  char *buffer;
 
 public:
-  Test1() {
+  String1() {
     cout << "Default No-Parameter Constructor" << endl;
-    this->_pBuffer = new int[SIZE]{};
-    this->name = "default";
+    this->size = 0;
+    this->buffer = nullptr;
     /**
      * Setting the default value to 0 is a good practice. Three
      * different ways of setting the memory to zero are shown here:
@@ -25,153 +24,178 @@ public:
      */
   }
 
-  Test1(int i, string name) {
+  String1(const char *name) {
     cout << "Parameterized Constructor" << endl;
-    this->name = name;
-    this->_pBuffer = new int[this->SIZE]{};
-    for (int j = 0; j < this->SIZE; j++) {
-      this->_pBuffer[j] = i * i;
-    }
+    this->size = std::strlen(name);
+    // No need to allocate size+1 buffer. Why?
+    this->buffer = new char[this->size];
+    memcpy(this->buffer, name, this->size);
   }
 
-  Test1(const Test1 &other) {
+  String1(const String1 &other) {
     cout << "Copy Construtor" << endl;
-    this->name = other.name;
-    this->_pBuffer = new int[this->SIZE]{};
-    memcpy(this->_pBuffer, other._pBuffer, sizeof(int) * this->SIZE);
+    this->size = other.size;
+    this->buffer = new char[this->size];
+    memcpy(this->buffer, other.buffer, this->size);
   }
 
-  Test1 &operator=(const Test1 &other) {
+  String1 &operator=(const String1 &other) {
     cout << "Copy Assignment Operator" << endl;
-    this->name = other.name;
-    memcpy(this->_pBuffer, other._pBuffer, sizeof(int) * this->SIZE);
+    if (this != &other) {
+      // The buffer size of `this` is different from the `other`'s. So we need
+      // to delete `this` and reallocate memory for `this` with the size of
+      // `other`.
+      delete[] this->buffer;
+
+      this->size = other.size;
+      this->buffer = new char[this->size];
+      memcpy(this->buffer, other.buffer, this->size);
+    }
     return *this;
   }
 
-  ~Test1() {
-    cout << "Destructor: "
-         << "Destroy " << this->name << endl;
-    delete[] this->_pBuffer;
+  ~String1() {
+    cout << "Destructor: ";
+    for (uint32_t i = 0; i < this->size; ++i) {
+      cout << this->buffer[i];
+    }
+    cout << '\n';
+    delete[] this->buffer;
   }
 
-  friend ostream &operator<<(ostream &out, const Test1 &test);
+  friend ostream &operator<<(ostream &out, const String1 &test);
 };
 
-ostream &operator<<(ostream &out, const Test1 &test) {
-  out << "Elements: ";
-  for (int i = 0; i < test.SIZE; ++i) {
-    out << test._pBuffer[i] << ' ';
+ostream &operator<<(ostream &out, const String1 &test) {
+  out << "String: ";
+  for (uint32_t i = 0; i < test.size; ++i) {
+    out << test.buffer[i] << ' ';
   }
   return out;
 }
 
-Test1 get_test1() { return Test1(); }
+String1 get_String1() { return String1(); }
 
-class Test2 {
+class String2 {
 private:
-  static const int SIZE = 10;
-  int *_pBuffer;
-  string name;
+  uint32_t size;
+  char *buffer;
 
 public:
-  Test2() {
+  String2() {
     cout << "Default No-Parameter Constructor" << endl;
-    this->_pBuffer = new int[SIZE]{};
-    this->name = "default";
+    this->size = 0;
+    this->buffer = nullptr;
   }
 
-  Test2(int i, string name) {
+  String2(const char *name) {
     cout << "Parameterized Constructor" << endl;
-    this->name = name;
-    this->_pBuffer = new int[this->SIZE]{};
-    for (int j = 0; j < this->SIZE; j++) {
-      this->_pBuffer[j] = i * i;
-    }
+    this->size = std::strlen(name);
+    this->buffer = new char[this->size];
+    memcpy(this->buffer, name, this->size);
   }
 
-  Test2(const Test2 &other) {
+  String2(const String2 &other) {
     cout << "Copy Construtor" << endl;
-    this->name = other.name;
-    this->_pBuffer = new int[this->SIZE]{};
-    memcpy(this->_pBuffer, other._pBuffer, sizeof(int) * this->SIZE);
+    this->size = other.size;
+    this->buffer = new char[this->size];
+    memcpy(this->buffer, other.buffer, this->size);
   }
 
-  Test2 &operator=(const Test2 &other) {
+  String2 &operator=(const String2 &other) {
     cout << "Copy Assignment Operator" << endl;
-    this->name = other.name;
-    memcpy(this->_pBuffer, other._pBuffer, sizeof(int) * this->SIZE);
+    if (this != &other) {
+      // The buffer size of `this` is different from the `other`'s. So we need
+      // to delete `this` and reallocate memory for `this` with the size of
+      // `other`.
+      delete[] this->buffer;
+
+      this->size = other.size;
+      this->buffer = new char[this->size];
+      memcpy(this->buffer, other.buffer, this->size);
+    }
     return *this;
   }
 
-  Test2(Test2 &&other) {
+  String2(String2 &&other) {
     cout << "Move Constructor" << endl;
-    this->name = other.name;
+    this->size = other.size;
     /**
      * In the copy constructor, we have to allocate memory.
      * In the move constructor, we don't have to allocate any more memory. We
      * just have to change a couple of variables so it's very efficient.
      */
-    this->_pBuffer = other._pBuffer;
+    this->buffer = other.buffer;
 
     /**
-     * NOTE: Here, the destructor of "other" will deallocate "_pBuffer" and
-     * we've stolen the buffer so we don't want that to happen. So to deal with
-     * this all we have to do is set "other._pBuffer" to point to nullptr. And
-     * it is safe to delete a nullptr.
+     * NOTE: Here, the destructor of "other" will deallocate "other.buffer" and
+     * we've stolen the buffer so we don't want that to happen. So to deal
+     * with this all we have to do is set "other.buffer" to point to
+     * nullptr. And it is safe to delete a nullptr.
      */
-    other._pBuffer = nullptr;
+    other.size = 0;
+    other.buffer = nullptr;
   }
 
-  Test2 &operator=(Test2 &&other) {
+  String2 &operator=(String2 &&other) {
     cout << "Move Assignment Operator" << endl;
-    this->name = other.name;
-    /**
-     * Here, the object to which we are assigning, already allocated
-     * memory. So, we need to free up any memory that has been
-     * allocated.
-     */
-    delete[] this->_pBuffer;
+    if (this != &other) {
+      this->size = other.size;
+      /**
+       * Here, the object `buffer` to which `this` points, needs to be freed up,
+       * because `this` is going to point to `other`'s memory. If it's not done,
+       * then we have a memory leak.
+       */
+      delete[] this->buffer;
 
-    this->_pBuffer = other._pBuffer;
+      this->buffer = other.buffer;
 
-    other._pBuffer = nullptr;
-
+      other.size = 0;
+      other.buffer = nullptr;
+    }
     return *this;
   }
-
-  ~Test2() {
-    cout << "Destructor: "
-         << "Destroy " << this->name << endl;
-    delete[] this->_pBuffer;
+  ~String2() {
+    cout << "Destructor: ";
+    // NOTE: a potential bug is here. If `this` has pointed to a nullptr and
+    // size is non-zero, then it causes error:
+    // Segmentation fault (core dumped)
+    for (uint32_t i = 0; i < this->size; ++i) {
+      cout << this->buffer[i];
+    }
+    cout << '\n';
+    delete[] this->buffer;
   }
 
-  friend ostream &operator<<(ostream &out, const Test2 &test);
+  friend ostream &operator<<(ostream &out, const String2 &test);
 };
 
-ostream &operator<<(ostream &out, const Test2 &test) {
-  out << "Elements: ";
-  for (int i = 0; i < test.SIZE; ++i) {
-    out << test._pBuffer[i] << ' ';
+ostream &operator<<(ostream &out, const String2 &test) {
+  out << "String: ";
+  for (uint32_t i = 0; i < test.size; ++i) {
+    out << test.buffer[i] << ' ';
   }
   return out;
 }
 
-Test2 get_test2() { return Test2(); }
+String2 get_String2() { return String2(); }
 
 // Example command:
-// g++ -Wall -std=c++17 -std=gnu++17 constructors_and_memory.cpp && ./a.out
+// g++ -Wall -std=c++17 -std=gnu++17 constructors_and_assignment_operators.cpp && ./a.out
 int main() {
-  // Test1 test1;
-  // test1 = get_test1();
-  // Test1 test2{1, "test2"};
-  // Test1 test3{test2};
+  // Comment out the code below to run the test.
+
+  // String1 test1;
+  // test1 = get_String1();
+  // String1 test2{"test2"};
+  // String1 test3{test2};
   // cout << "test1: " << test1 << endl;
   // test1 = test3;
   // cout << "test2: " << test2 << endl;
   // cout << "test3: " << test3 << endl;
   // cout << "test1: " << test1 << endl;
-  // vector<Test1> vec;
-  // vec.push_back(Test1(10, "rvalue"));
+  // vector<String1> vec;
+  // vec.push_back(String1("rvalue"));
   // vec.push_back(test1);
   // cout << "vec[0] " << vec[0] << endl;
   // cout << "vec[1] " << vec[1] << endl;
@@ -202,17 +226,17 @@ int main() {
   Destructor: Destroy test2
   **/
 
-  // Test2 test1;
-  // test1 = get_test2();
-  // Test2 test2{1, "test2"};
-  // Test2 test3{test2};
+  // String2 test1;
+  // test1 = get_String2();
+  // String2 test2{"test2"};
+  // String2 test3{test2};
   // cout << "test1: " << test1 << endl;
   // test1 = test3;
   // cout << "test2: " << test2 << endl;
   // cout << "test3: " << test3 << endl;
   // cout << "test1: " << test1 << endl;
-  // vector<Test2> vec;
-  // vec.push_back(Test2(10, "rvalue"));
+  // vector<String2> vec;
+  // vec.push_back(String2("rvalue"));
   // vec.push_back(test1);
   // cout << "vec[0] " << vec[0] << endl;
   // cout << "vec[1] " << vec[1] << endl;
@@ -242,6 +266,15 @@ int main() {
   Destructor: Destroy test2
   Destructor: Destroy test2
   **/
+
+  // cout << "Test move-from object\n";
+  // String2 test1{"apple"};
+  // String2 test2;
+  // cout << test1 << '\n';
+  // cout << test2 << '\n';
+  // test2 = std::move(test1);
+  // cout << test1 << '\n';
+  // cout << test2 << '\n';
 
   return 0;
 }
