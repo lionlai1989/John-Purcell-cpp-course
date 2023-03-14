@@ -327,35 +327,35 @@ int main() {
    * Compare the output message between String2 and String3 to see if there is
    * any discrepancy.
    */
-  String3 test1;
-  test1 = get_String3();
-  String3 test2{"test2"};
-  String3 test3{test2};
-  std::cout << "test1: " << test1 << '\n';
-  test1 = test3;
-  std::cout << "test2: " << test2 << '\n';
-  std::cout << "test3: " << test3 << '\n';
-  std::cout << "test1: " << test1 << '\n';
-  std::vector<String3> vec;
-  vec.push_back(String3("rvalue"));
-  vec.push_back(test1);
-  std::cout << "vec[0] " << vec[0] << '\n';
-  std::cout << "vec[1] " << vec[1] << '\n';
-  std::cout << '\n';
+  // String3 test1;
+  // test1 = get_String3();
+  // String3 test2{"test2"};
+  // String3 test3{test2};
+  // std::cout << "test1: " << test1 << '\n';
+  // test1 = test3;
+  // std::cout << "test2: " << test2 << '\n';
+  // std::cout << "test3: " << test3 << '\n';
+  // std::cout << "test1: " << test1 << '\n';
+  // std::vector<String3> vec;
+  // vec.push_back(String3("rvalue"));
+  // vec.push_back(test1);
+  // std::cout << "vec[0] " << vec[0] << '\n';
+  // std::cout << "vec[1] " << vec[1] << '\n';
+  // std::cout << '\n';
 
-  std::cout << "Test move-from object:\n";
-  test2 = std::move(test1);
-  std::cout << "test2: " << test2 << '\n';
-  std::cout << "test1: " << test1 << '\n';
+  // std::cout << "Test move-from object:\n";
+  // test2 = std::move(test1);
+  // std::cout << "test2: " << test2 << '\n';
+  // std::cout << "test1: " << test1 << '\n';
 
-  std::cout << "\nTest move-from object\n";
-  String3 test_apple{"apple"};
-  String3 test_empty{"orange"};
-  std::cout << test_apple << '\n';
-  std::cout << test_empty << '\n';
-  test_empty = std::move(test_apple);
-  std::cout << test_apple << '\n';
-  std::cout << test_empty << '\n';
+  // std::cout << "\nTest move-from object\n";
+  // String3 test_apple{"apple"};
+  // String3 test_empty{"orange"};
+  // std::cout << test_apple << '\n';
+  // std::cout << test_empty << '\n';
+  // test_empty = std::move(test_apple);
+  // std::cout << test_apple << '\n';
+  // std::cout << test_empty << '\n';
 
   return 0;
 }
