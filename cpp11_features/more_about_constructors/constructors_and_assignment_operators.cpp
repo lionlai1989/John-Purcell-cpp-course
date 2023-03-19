@@ -227,8 +227,14 @@ public:
   String3 &operator=(String3 &&other) {
     std::cout << "Move Assignment Operator\n";
     swap(other);
-    other.size = 0;
-    other.buffer = nullptr;
+    /**
+     * Is it necessary to reset `other.size` and `other.buffer` as below?
+     * other.size = 0;
+     * other.buffer = nullptr;
+     * If these two values are not reset, the moved-from object will still hold
+     * the original before-moved value of `this`. In theory, you SHOULDN'T CARE
+     * because you SHOULDN'T USE the moved-from object anymore.
+     */
     return *this;
   }
 
@@ -239,9 +245,6 @@ public:
 
   ~String3() {
     std::cout << "Destructor: ";
-    // NOTE: a potential bug is here. If `this` has pointed to a nullptr and
-    // size is non-zero, then it causes error:
-    // Segmentation fault (core dumped)
     for (uint32_t i = 0; i < this->size; ++i) {
       std::cout << this->buffer[i];
     }
@@ -325,7 +328,9 @@ int main() {
    * suggestions in this codereview:
    * https://codereview.stackexchange.com/questions/283826/a-simple-string-class-and-its-special-member-functions
    * Compare the output message between String2 and String3 to see if there is
-   * any discrepancy.
+   * any discrepancy. If there is any discrepancy, investigate String2 and
+   * String3 carefully to see if you can explain the root cause of the
+   * phenomenon. Hint: swap() in move assignment operator doesn't reset objects.
    */
   // String3 test1;
   // test1 = get_String3();
