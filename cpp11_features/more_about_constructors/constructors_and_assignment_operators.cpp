@@ -334,6 +334,9 @@ int main() {
    */
   // String3 test1;
   // test1 = get_String3();
+  // std::cout << "Observe RVO (Return Value Optimization) and Copy Elision."
+  //           << test1 << '\n';
+  // std::cout << '\n';
   // String3 test2{"test2"};
   // String3 test3{test2};
   // std::cout << "test1: " << test1 << '\n';
