@@ -125,7 +125,10 @@ int main() {
         // Log stack trace or other relevant information here...
 
         // There is NOTHING I can do to insepct what the exception is thrown but rethrow it.
-        // throw;  // throw the same error again to be handled somewhere else
+        // It's definitely better to throw the same exception again to be handled somewhere
+        // else as opposed to catch and just logging without concrete action.
+        // The bug lies within the exception.
+        // throw; // NOTE: Uncomment to rethrow the same exception.
     }
 
     // exception is thrown all the way out to main() through call stacks.
