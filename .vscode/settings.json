@@ -56,7 +56,8 @@
         "future": "cpp",
         "iomanip": "cpp",
         "mutex": "cpp",
-        "thread": "cpp"
+        "thread": "cpp",
+        "variant": "cpp"
     },
     "cmake.sourceDirectory": "/home/lai/cpp_self-study/cmake/Introduction_to_CMake_by_Example/shared_library"
 }
