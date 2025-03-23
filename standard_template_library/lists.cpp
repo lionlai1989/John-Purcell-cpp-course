@@ -3,6 +3,7 @@
 #include <vector>
 using namespace std;
 
+// g++ lists.cpp -Wall -std=c++17 -std=gnu++17 && ./a.out
 int main() {
     list<int> numbers;
 
