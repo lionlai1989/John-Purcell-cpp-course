@@ -16,7 +16,7 @@ double calculate_pi(int terms) {
     }
 
     for (int i = 0; i < terms; i++) {
-        int sign = pow(-1, i);
+        int sign = std::pow(-1, i);
         double term = 1.0 / (i * 2 + 1);
         sum += sign * term;
     }
