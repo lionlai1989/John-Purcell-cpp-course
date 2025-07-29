@@ -2,14 +2,12 @@
 #include <mutex>
 #include <thread>
 
-using namespace std;
-
-// Example command: g++ -Wall -std=c++17 -pthread 02_mutexes.cpp && ./a.out
+// g++ -Wall -std=c++17 -pthread 02_mutexes.cpp && ./a.out
 int main() {
     int count = 0;
     const int ITERATIONS = 1e6;
 
-    mutex mtx;
+    std::mutex mtx;
 
     auto func = [&]() {
         for (int i = 0; i < ITERATIONS; i++) {
@@ -26,11 +24,11 @@ int main() {
         }
     };
 
-    thread t1(func);
-    thread t2(func);
+    std::thread t1(func);
+    std::thread t2(func);
     t1.join();
     t2.join();
-    cout << count << endl; // 2000000
+    std::cout << count << std::endl; // 2000000
 
     return 0;
 }
