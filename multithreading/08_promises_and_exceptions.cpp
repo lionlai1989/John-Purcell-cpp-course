@@ -5,8 +5,6 @@
 #include <iostream>
 #include <thread>
 
-using namespace std;
-
 double calculate_pi(int terms) {
     /**
      * Leibniz formula for pi
@@ -14,7 +12,7 @@ double calculate_pi(int terms) {
     double sum = 0.0;
 
     if (terms < 1) {
-        throw runtime_error("Terms can not be less than 1");
+        throw std::runtime_error("Terms can not be less than 1");
     }
 
     for (int i = 0; i < terms; i++) {
@@ -26,35 +24,35 @@ double calculate_pi(int terms) {
     return sum * 4;
 }
 
-// Example command: g++ -Wall -std=c++17 -pthread 08_promises_and_exceptions.cpp && ./a.out
+// g++ -Wall -std=c++17 -pthread 08_promises_and_exceptions.cpp && ./a.out
 int main() {
     /**
      * In this tutorial, we're going to look at how exceptions work with promises. Naturally, it's
      * possible that you may be calculating something in the thread, and something may go wrong, and
      * it may throw an exception. And in that case, the question arises how to signal when you
      * actually get the result from the future that there isn't a result and instead there's only an
-     * exception. 
+     * exception.
      */
-    promise<double> promise;
+    std::promise<double> promise;
 
     auto do_calculation = [&](int terms) {
         try {
             auto result = calculate_pi(terms);
             promise.set_value(result);
-        } catch (const exception &e) {
-            cout << e.what() << endl;
-            promise.set_exception(current_exception());
+        } catch (const std::exception &e) {
+            std::cout << e.what() << std::endl;
+            promise.set_exception(std::current_exception());
         }
     };
 
-    thread t1(do_calculation, 0);
+    std::thread t1(do_calculation, 0);
 
-    future<double> future = promise.get_future();
+    std::future<double> future = promise.get_future();
 
     try {
-        cout << setprecision(15) << future.get() << endl;
-    } catch (const exception &e) {
-        cout << e.what() << endl;
+        std::cout << std::setprecision(15) << future.get() << std::endl;
+    } catch (const std::exception &e) {
+        std::cout << e.what() << std::endl;
     }
 
     t1.join();
