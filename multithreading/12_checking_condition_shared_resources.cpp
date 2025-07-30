@@ -3,23 +3,21 @@
 #include <iostream>
 #include <thread>
 
-using namespace std;
-
-// Example command: g++ -Wall -std=c++17 -pthread 12_checking_condition_shared_resources.cpp && ./a.out
+// g++ -Wall -std=c++17 -pthread 12_checking_condition_shared_resources.cpp && ./a.out
 int main() {
-    condition_variable condition;
-    mutex mtx;
+    std::condition_variable condition;
+    std::mutex mtx;
     bool ready1 = false;
 
-    thread t1([&]() {
-        this_thread::sleep_for(chrono::milliseconds(3000));
+    std::thread t1([&]() {
+        std::this_thread::sleep_for(std::chrono::milliseconds(3000));
 
-        cout << "t1 acquiring lock" << endl;
-        unique_lock<mutex> lock1(mtx);
-        cout << "t1 acquired lock" << endl;
+        std::cout << "t1 acquiring lock" << std::endl;
+        std::unique_lock<std::mutex> lock1(mtx);
+        std::cout << "t1 acquired lock" << std::endl;
 
         ready1 = true;
-        cout << "t1 released lock; notifying" << endl;
+        std::cout << "t1 released lock; notifying" << std::endl;
         lock1.unlock();
 
         // It must notify here so the main thread can be notified. In other words, if
@@ -30,22 +28,22 @@ int main() {
         condition.notify_one();
     });
 
-    cout << "main thread acquiring lock" << endl;
-    unique_lock<mutex> lock2(mtx);
+    std::cout << "main thread acquiring lock" << std::endl;
+    std::unique_lock<std::mutex> lock2(mtx);
 
-    cout << "main thread acquired lock; waiting" << endl;
+    std::cout << "main thread acquired lock; waiting" << std::endl;
     /**
      * While the main thread is waiting at this point, it atomically releases the mutex
      * and suspends thread execution until the condition variable is notified. Thus, in
      * order to making the program continue to run, the following things must happen:
-     * 
+     *
      * - `ready1` is assigned to `true`.
      * - `condition` is notified.
-    */
+     */
     condition.wait(lock2, [&]() { return ready1; });
 
-    cout << "main thread finished waiting" << endl;
-    cout << "ready1: " << ready1 << endl; // ready1: 1
+    std::cout << "main thread finished waiting" << std::endl;
+    std::cout << "ready1: " << ready1 << std::endl; // ready1: 1
 
     t1.join();
 
