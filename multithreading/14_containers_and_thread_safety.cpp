@@ -2,39 +2,36 @@
 #include <queue>
 #include <thread>
 
-using namespace std;
-
 template <typename T>
 class BlockingQueue {
   private:
     int _max_size;
-    queue<T> _queue;
+    std::queue<T> _queue;
 
   public:
-    BlockingQueue(int max_size) : _max_size(max_size) {
-    }
+    BlockingQueue(int max_size) : _max_size(max_size) {}
 
     void push(T t) {
         _queue.push(t);
-        //cout << "Push" << endl;
+        // cout << "Push" << endl;
     }
 
     T pop() {
         T item = _queue.front(); // accessing an element.
         _queue.pop();            // popping off an element.
-        //cout << "Pop" << endl;
+        // cout << "Pop" << endl;
         return item;
     }
 };
 
-// Example command: g++ -Wall -std=c++17 -pthread 14_containers_and_thread_safety.cpp && ./a.out
+// g++ -Wall -std=c++17 -pthread 14_containers_and_thread_safety.cpp && ./a.out
 int main() {
     /**
      * Thread safety:
      * We usually mean a function could be thread safe, we usually mean that this function can be
      * used by multiple threads and you don't have to worry about synchronization. So the question
      * here is that if the STL queue itself is thread safe for all the containers in the standard
-     * template library. The answer is it depends. Check out the "Thread Safety" section in 
+     * template library. The answer is it depends. Check out the "Thread Safety" section in
      * https://en.cppreference.com/w/cpp/container and google this topic in stackoverflow. Thus, the
      * best thing we can do in general is putting some synchronization ourselves when we are
      * accessing containers from multiple threads. By doing this, we will know what is happening
@@ -43,19 +40,19 @@ int main() {
      */
     BlockingQueue<int> qu(5);
 
-    thread t1([&]() {
+    std::thread t1([&]() {
         // Producer
         for (int i = 0; i < 10; i++) {
             qu.push(i);
-            cout << "Produced " << i << endl;
+            std::cout << "Produced " << i << std::endl;
         }
     });
 
-    thread t2([&]() {
+    std::thread t2([&]() {
         // Consumer
         for (int i = 0; i < 10; i++) {
             auto item = qu.pop();
-            cout << "Consumed " << item << endl;
+            std::cout << "Consumed " << item << std::endl;
         }
     });
 
@@ -64,12 +61,12 @@ int main() {
     /**
      * The output shows that it seems fine (the program will not crash) when popping elements faster
      * from queue than pushing elements into queue. It just returns 0. And it is not what we want,
-     * because we also want the consumer to consume the elements correctly. 
+     * because we also want the consumer to consume the elements correctly.
      * Output:
      * Produced Consumed 00
      * Produced 1
      * Produced 2
-     * Produced 
+     * Produced
      * Consumed 1
      * Consumed 2
      * Consumed 3
